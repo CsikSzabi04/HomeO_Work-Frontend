@@ -1,6 +1,6 @@
 [build]
   command = "npm run build"
-  publish = "dist/camel/browser"
+  publish = "dist/camel"
 
 [[redirects]]
   from = "/api/*"
@@ -20,3 +20,4 @@
   from = "/*"
   to = "/index.html"
   status = 200
+
