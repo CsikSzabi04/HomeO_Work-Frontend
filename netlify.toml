@@ -1,9 +1,6 @@
 [build]
-  command = "ng build --configuration production --output-path=dist/camel/browser --base-href=/"
-  publish = "dist/camel/browser"
-  
-[context.production.environment]
-  NETLIFY_ANGULAR_RUNTIME = "false"
+  command = "ng build --configuration production --no-ssr --output-path=dist --base-href=/"
+  publish = "dist"
 
 [[redirects]]
   from = "/api/*"
