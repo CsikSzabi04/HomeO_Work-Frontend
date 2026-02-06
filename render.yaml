@@ -1,0 +1,14 @@
+# render.yaml
+services:
+  - type: static
+    name: teve-frontend
+    env: static
+    buildCommand: npm run build
+    publishPath: dist/camel
+    routes:
+      - type: rewrite
+        source: /api/*
+        destination: https://homeo-work-backend.onrender.com/api/*
+      - type: rewrite
+        source: /*
+        destination: /index.html
