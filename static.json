@@ -1,5 +1,5 @@
 {
-  "root": "dist/camel/browser",
+  "root": "dist/camel",
   "routes": {
     "/**": "index.html"
   },
@@ -10,4 +10,5 @@
       "Access-Control-Allow-Headers": "Content-Type"
     }
   }
+
 }
