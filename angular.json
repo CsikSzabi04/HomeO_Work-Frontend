@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist", 
+            "outputPath": "dist/camel",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -22,7 +22,17 @@
             "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              {
+                "glob": "_redirects",
+                "input": "src",
+                "output": "/"
+              },
+              {
+                "glob": "_headers",
+                "input": "src",
+                "output": "/"
+              }
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
