@@ -4,7 +4,7 @@
 
 Egy egyszerű webalkalmazás tevék kezelésére, nyilvántartására. Az alkalmazás lehetővé teszi tevék hozzáadását, szerkesztését, törlését és listázását.
 
-## 🚀 Funkciók
+## Funkciók
 
 - **Tevék listázása** - Táblázatos nézet az összes teve adataival
 - **Új teve hozzáadása** - Űrlap segítségével, validációval
@@ -47,3 +47,4 @@ A teve entitás a következő mezőket tartalmazza:
    npm install
    ng serve
    (buld: ng build --prod)
+
