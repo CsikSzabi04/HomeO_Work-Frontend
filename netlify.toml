@@ -1,6 +1,6 @@
 [build]
-  command = "npm run build"
-  publish = "dist/camel"
+  command = "ng build --configuration production --output-path=dist --base-href=/"
+  publish = "dist"
 
 [context.production.environment]
   NETLIFY_ANGULAR_RUNTIME = "false"
