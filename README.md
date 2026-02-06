@@ -1,27 +1,49 @@
-# Camel
+# Teve Istálló App
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.17.
+![](https://github-production-user-asset-6210df.s3.amazonaws.com/68150404/546184931-c1b743c0-fee2-4c25-a08c-1f4823f307c5.png)
 
-## Development server
+Egy egyszerű webalkalmazás tevék kezelésére, nyilvántartására. Az alkalmazás lehetővé teszi tevék hozzáadását, szerkesztését, törlését és listázását.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## 🚀 Funkciók
 
-## Code scaffolding
+- **Tevék listázása** - Táblázatos nézet az összes teve adataival
+- **Új teve hozzáadása** - Űrlap segítségével, validációval
+- **Teve szerkesztése** - Meglévő tevék adatainak módosítása
+- **Teve törlése** - Megerősítő dialógus ablakkal
+- **Validáció** - Kötelező mezők ellenőrzése (név, púpok száma)
+- **Reszponzív design** - Bootstrap 5 alapú, minden eszközön jól működik
+- **Felhasználóbarát felület** - Intuitív kezelés, ikonok, visszajelzések
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Adatmodell
 
-## Build
+A teve entitás a következő mezőket tartalmazza:
+- **Név** (kötelező, minimum 2 karakter)
+- **Szín** (opcionális)
+- **Utoljára etetve** (dátum és idő, opcionális)
+- **Púpok száma** (kötelező, csak 1 vagy 2 lehet)
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Technológiai háttér
 
-## Running unit tests
+- **Angular** - Frontend keretrendszer
+- **TypeScript** - Programozási nyelv
+- **Bootstrap 5** - Stíluskeretrendszer
+- **Angular Reactive Forms** - Űrlapkezelés
+- **Font Awesome** - Ikonok
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Telepítés és futtatás
 
-## Running end-to-end tests
+### Előfeltételek
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+- [Node.js](https://nodejs.org/) (v14 vagy újabb)
+- [Angular CLI](https://angular.io/cli) (globálisan telepítve)
+- Git
 
-## Further help
+### Telepítés lépései
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+1. **Tároló klónozása**
+   ```bash
+   git clone <repository-url>
+   cd teve-istallo-app
+   npm install
+   ng serve
+   (buld: ng build --prod)
