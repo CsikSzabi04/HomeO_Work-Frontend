@@ -25,7 +25,9 @@ export class CamelListComponent implements OnInit {
   ) {
     this.camelForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(2)]],
-      humpCount: [null, [Validators.required]]
+      color: [''],
+      lastFed: [''],
+      humpCount: [null, [Validators.required, Validators.min(1), Validators.max(2)]]
     });
   }
 
@@ -53,9 +55,12 @@ export class CamelListComponent implements OnInit {
       return;
     }
 
+    const formValue = this.camelForm.value;
     const camelData: Camel = {
-      name: this.camelForm.value.name,
-      humpCount: this.camelForm.value.humpCount
+      name: formValue.name,
+      color: formValue.color,
+      lastFed: formValue.lastFed ? new Date(formValue.lastFed).toISOString() : null,
+      humpCount: formValue.humpCount
     };
 
     if (this.isEditing && this.currentCamelId) {
@@ -92,8 +97,17 @@ export class CamelListComponent implements OnInit {
   editCamel(camel: Camel): void {
     this.isEditing = true;
     this.currentCamelId = camel.id;
+    
+    let lastFedFormatted = '';
+    if (camel.lastFed) {
+      const date = new Date(camel.lastFed);
+      lastFedFormatted = date.toISOString().slice(0, 16);
+    }
+    
     this.camelForm.patchValue({
       name: camel.name,
+      color: camel.color,
+      lastFed: lastFedFormatted,
       humpCount: camel.humpCount
     });
     window.scrollTo(0, 0);
@@ -144,6 +158,14 @@ export class CamelListComponent implements OnInit {
 
   get name() {
     return this.camelForm.get('name');
+  }
+
+  get color() {
+    return this.camelForm.get('color');
+  }
+
+  get lastFed() {
+    return this.camelForm.get('lastFed');
   }
 
   get humpCount() {

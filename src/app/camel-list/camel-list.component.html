@@ -4,194 +4,224 @@
             Teve Istálló App
         </h1>
     </div>
+<div *ngIf="deleteConfirmId" class="modal fade show d-block" tabindex="-1" role="dialog"
+    style="background-color: rgba(0,0,0,0.5);">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">
+                    <i class="bi bi-trash-fill me-2"></i>Törlés megerősítése
+                </h5>
+            </div>
+            <div class="modal-body">
+                <p>Biztosan törölni szeretnéd a <strong>"{{ deleteConfirmName }}"</strong> nevű tevét?</p>
+                <p class="text-muted small">A művelet nem visszavonható.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="cancelDelete()">
+                    <i class="bi bi-x-circle me-1"></i>Mégse
+                </button>
+                <button type="button" class="btn btn-danger" (click)="deleteCamel()">
+                    <i class="bi bi-trash me-1"></i>Törlés
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <div *ngIf="deleteConfirmId" class="modal fade show d-block" tabindex="-1" role="dialog"
-        style="background-color: rgba(0,0,0,0.5);">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title">
-                        <i class="bi bi-trash-fill me-2"></i>Törlés megerősítése
+<div class="row mb-5">
+    <div class="col-lg-8 mx-auto">
+        <div class="card shadow border-0">
+            <div class="card-header bg-gradient-primary text-white py-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <i class="bi bi-pencil-square me-2"></i>
+                        {{ isEditing ? 'Teve szerkesztése' : 'Új teve hozzáadása' }}
                     </h5>
                 </div>
-                <div class="modal-body">
-                    <p>Biztosan törölni szeretnéd a <strong>"{{ deleteConfirmName }}"</strong> nevű tevét?</p>
-                    <p class="text-muted small">A művelet nem visszavonható.</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" (click)="cancelDelete()">
-                        <i class="bi bi-x-circle me-1"></i>Mégse
-                    </button>
-                    <button type="button" class="btn btn-danger" (click)="deleteCamel()">
-                        <i class="bi bi-trash me-1"></i>Törlés
-                    </button>
-                </div>
+            </div>
+            <div class="card-body p-4">
+                <form [formGroup]="camelForm" (ngSubmit)="onSubmit()" novalidate>
+                    <div class="mb-4">
+                        <label for="name" class="form-label fw-semibold">
+                            Teve neve
+                            <span class="text-danger">*</span>
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-tag"></i></span>
+                            <input placeholder="Pl. János, Ricsi, Szabolcs" type="text" class="form-control" id="name" formControlName="name" [class.is-invalid]="name?.invalid && (name?.dirty || name?.touched)" autocomplete="off">
+                        </div>
+                        <div *ngIf="name?.invalid && (name?.dirty || name?.touched)" class="invalid-feedback d-block mt-2">
+                            <div *ngIf="name?.errors?.['required']">
+                                A név megadása kötelező
+                            </div>
+                            <div *ngIf="name?.errors?.['minlength']">
+                                A névnek legalább 2 karakter hosszúnak kell lennie
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="color" class="form-label fw-semibold">
+                            Szín
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-palette"></i></span>
+                            <input type="text" class="form-control" id="color" formControlName="color" placeholder="Pl. Kék, Fekete, Narancssárga">
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="lastFed" class="form-label fw-semibold">
+                            Utoljára etetve
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-calendar"></i></span>
+                            <input type="datetime-local" class="form-control" id="lastFed" formControlName="lastFed">
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="humpCount" class="form-label fw-semibold">
+                            <i class="bi bi-mountain me-1"></i>Púpok száma
+                            <span class="text-danger">*</span>
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-list-ol"></i></span>
+                            <select class="form-select" id="humpCount" formControlName="humpCount"
+                                [class.is-invalid]="humpCount?.invalid && (humpCount?.dirty || humpCount?.touched)">
+                                <option value="" disabled selected>Válassz púpszámot...</option>
+                                <option value="1">1 púp</option>
+                                <option value="2">2 púp</option>
+                            </select>
+                        </div>
+                        <div *ngIf="humpCount?.invalid && (humpCount?.dirty || humpCount?.touched)"
+                            class="invalid-feedback d-block mt-2">
+                            <div *ngIf="humpCount?.errors?.['required']">
+                                A púpszám megadása kötelező
+                            </div>
+                            <div *ngIf="humpCount?.errors?.['min'] || humpCount?.errors?.['max']">
+                                Csak 1 vagy 2 púp lehet
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-3 mt-4">
+                        <button type="submit" class="btn btn-primary px-4 py-2" [disabled]="camelForm.invalid"
+                            [class.btn-success]="isEditing">
+                            <i *ngIf="isEditing" class="bi bi-check-lg me-2"></i>
+                            <i *ngIf="!isEditing" class="bi bi-plus-lg me-2"></i>
+                            {{ isEditing ? 'Frissítés' : 'Hozzáadás' }}
+                        </button>
+
+                        <button type="button" class="btn btn-outline-secondary px-4 py-2" (click)="resetForm()"
+                            *ngIf="isEditing">
+                            <i class="bi bi-x-lg me-2"></i>Mégse
+                        </button>
+
+                        <button type="button" class="btn btn-light px-4 py-2 ms-auto" (click)="camelForm.reset()">
+                            <i class="bi bi-eraser me-2"></i>Űrlap törlése
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-
-    <div class="row mb-5">
-        <div class="col-lg-8 mx-auto">
-            <div class="card shadow border-0">
-                <div class="card-header bg-gradient-primary text-white py-3">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">
-                            <i class="bi bi-pencil-square me-2"></i>
-                            {{ isEditing ? 'Teve szerkesztése' : 'Új teve hozzáadása' }}
-                        </h5>
-                    </div>
-                </div>
-                <div class="card-body p-4">
-                    <form [formGroup]="camelForm" (ngSubmit)="onSubmit()" novalidate>
-                        <div class="mb-4">
-                            <label for="name" class="form-label fw-semibold">
-                                <i class="bi bi-card-heading me-1"></i>Teve neve
-                                <span class="text-danger">*</span>
-                            </label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-tag"></i></span>
-                                <input type="text" class="form-control" id="name" formControlName="name" [class.is-invalid]="name?.invalid && (name?.dirty || name?.touched)" autocomplete="off">
-                            </div>
-                            <div *ngIf="name?.invalid && (name?.dirty || name?.touched)" class="invalid-feedback d-block mt-2">
-                                <div *ngIf="name?.errors?.['required']">
-                                    A név megadása kötelező
-                                </div>
-                                <div *ngIf="name?.errors?.['minlength']">
-                                    A névnek legalább 2 karakter hosszúnak kell lennie
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="humpCount" class="form-label fw-semibold">
-                                <i class="bi bi-mountain me-1"></i>Púpok száma
-                                <span class="text-danger">*</span>
-                            </label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-list-ol"></i></span>
-                                <select class="form-select" id="humpCount" formControlName="humpCount"
-                                    [class.is-invalid]="humpCount?.invalid && (humpCount?.dirty || humpCount?.touched)">
-                                    <option value="" disabled selected>Válassz púpszámot...</option>
-                                    <option value="1">1 púp</option>
-                                    <option value="2">2 púp</option>
-                                </select>
-                            </div>
-                            <div *ngIf="humpCount?.invalid && (humpCount?.dirty || humpCount?.touched)"
-                                class="invalid-feedback d-block mt-2">
-                                <div *ngIf="humpCount?.errors?.['required']">
-                                    A púpszám megadása kötelező
-                                </div>
-                                <div *ngIf="humpCount?.errors?.['min'] || humpCount?.errors?.['max']">
-                                    Csak 1 vagy 2 púp lehet
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="d-flex flex-wrap gap-3 mt-4">
-                            <button type="submit" class="btn btn-primary px-4 py-2" [disabled]="camelForm.invalid"
-                                [class.btn-success]="isEditing">
-                                <i *ngIf="isEditing" class="bi bi-check-lg me-2"></i>
-                                <i *ngIf="!isEditing" class="bi bi-plus-lg me-2"></i>
-                                {{ isEditing ? 'Frissítés' : 'Hozzáadás' }}
-                            </button>
-
-                            <button type="button" class="btn btn-outline-secondary px-4 py-2" (click)="resetForm()"
-                                *ngIf="isEditing">
-                                <i class="bi bi-x-lg me-2"></i>Mégse
-                            </button>
-
-                            <button type="button" class="btn btn-light px-4 py-2 ms-auto" (click)="camelForm.reset()">
-                                <i class="bi bi-eraser me-2"></i>Űrlap törlése
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-12">
-            <div class="card shadow border-0">
-                <div class="card-header bg-gradient-light py-3">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">
-                            <i class="bi bi-list-check me-2"></i>Tevék listája
-                        </h5>
-                    </div>
-                </div>
-                <div class="card-body p-0">
-                    <div *ngIf="!isLoading && camels.length === 0" class="text-center py-5">
-                        <i class="bi bi-inbox display-1 text-muted mb-3"></i>
-                        <h4 class="text-muted">Nincsenek tevék</h4>
-                        <p class="text-muted">Adj hozzá egy új tevét a fenti űrlappal!</p>
-                    </div>
-
-                    <div *ngIf="!isLoading && camels.length > 0" class="table-responsive">
-                        <table class="table table-hover align-middle mb-0">
-                            <thead class="table-light">
-                                <tr>
-                                    <th scope="col" class="ps-4">#</th>
-                                    <th scope="col">Név</th>
-                                    <th scope="col">Púpok</th>
-                                    <th scope="col" class="text-end pe-4">Műveletek</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let camel of camels; let i = index">
-                                    <th scope="row" class="ps-4 fw-normal text-muted">
-                                        <small class="text-muted">ID: {{ camel.id }}</small>
-                                    </th>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <div class="avatar-sm bg-primary bg-opacity-10 text-dark rounded-circle d-flex align-items-center justify-content-center me-3">
-                                                <i class="bi bi-tree-fill"></i>
-                                            </div>
-                                            <div>
-                                                <h6 class="mb-0">{{ camel.name }}</h6>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <span class="badge bg-light-brown text-brown fs-6">
-                                            {{ camel.humpCount }} púp
-                                        </span>
-                                    </td>
-                                    <td class="text-end pe-4">
-                                        <div class="btn-group" role="group">
-                                            <button class="btn btn-outline-warning btn-sm" (click)="editCamel(camel)">
-                                                <i class="bi bi-pencil"></i>
-                                                <span class="d-none d-md-inline ms-1">Szerkesztés</span>
-                                            </button>
-                                            <button class="btn btn-outline-danger btn-sm" (click)="confirmDelete(camel)">
-                                                <i class="bi bi-trash"></i>
-                                                <span class="d-none d-md-inline ms-1">Törlés</span>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div *ngIf="!isLoading && camels.length > 0" class="card-footer bg-light py-3">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <small class="text-muted">
-                                    <i class="bi bi-info-circle me-1"></i>
-                                </small>
-                            </div>
-                            <div class="col-md-6 text-md-end">
-                                <small class="text-muted">
-                                    Összesen: {{ camels.length }} teve
-                                </small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <footer class="mt-5 pt-4 border-top text-center text-muted"></footer>
 </div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow border-0">
+            <div class="card-header bg-gradient-light py-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <i class="bi bi-list-check me-2"></i>Tevék listája
+                    </h5>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <div *ngIf="!isLoading && camels.length === 0" class="text-center py-5">
+                    <i class="bi bi-inbox display-1 text-muted mb-3"></i>
+                    <h4 class="text-muted">Nincsenek tevék</h4>
+                    <p class="text-muted">Adj hozzá egy új tevét a fenti űrlappal!</p>
+                </div>
+
+                <div *ngIf="!isLoading && camels.length > 0" class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col" class="ps-4">#</th>
+                                <th scope="col">Név</th>
+                                <th scope="col">Szín</th>
+                                <th scope="col">Utoljára etetve</th>
+                                <th scope="col">Púpok</th>
+                                <th scope="col" class="text-end pe-4">Műveletek</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let camel of camels; let i = index">
+                                <th scope="row" class="ps-4 fw-normal text-muted">
+                                    <small class="text-muted">ID: {{ camel.id }}</small>
+                                </th>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-sm bg-primary bg-opacity-10 text-dark rounded-circle d-flex align-items-center justify-content-center me-3">
+                                            <i class="bi bi-tree-fill"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0">{{ camel.name }}</h6>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="badge bg-light text-dark">
+                                        {{ camel.color || 'Nincs megadva' }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <small class="text-muted">
+                                         {{ camel.lastFed ? (camel.lastFed | date:'yyyy/MM/dd') : 'Még nem' }}
+                                    </small>
+                                </td>
+                                <td>
+                                    <span class="badge bg-light-brown text-brown fs-6">
+                                        {{ camel.humpCount }} púp
+                                    </span>
+                                </td>
+                                <td class="text-end pe-4">
+                                    <div class="btn-group" role="group">
+                                        <button class="btn btn-outline-warning btn-sm" (click)="editCamel(camel)">
+                                            <i class="bi bi-pencil"></i>
+                                            <span class="d-none d-md-inline ms-1">Szerkesztés</span>
+                                        </button>
+                                        <button class="btn btn-outline-danger btn-sm" (click)="confirmDelete(camel)">
+                                            <i class="bi bi-trash"></i>
+                                            <span class="d-none d-md-inline ms-1">Törlés</span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div *ngIf="!isLoading && camels.length > 0" class="card-footer bg-light py-3">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <small class="text-muted">
+                                <i class="bi bi-info-circle me-1"></i>
+                            </small>
+                        </div>
+                        <div class="col-md-6 text-md-end">
+                            <small class="text-muted">
+                                Összesen: {{ camels.length }} teve
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="mt-5 pt-4 border-top text-center text-muted"></footer>
