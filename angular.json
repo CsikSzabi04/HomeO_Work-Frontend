@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/camel/browser",
+            "outputPath": "dist/camel",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -96,4 +96,5 @@
   "cli": {
     "analytics": false
   }
+
 }
